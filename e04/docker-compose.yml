@@ -1,0 +1,48 @@
+name: my_pod
+
+services:
+  ingress:
+    build:
+      context: ./ingress
+      no_cache: true
+    ports:
+      - 8080:80
+    # networks:
+    #   - public
+    #   - private
+    volumes:
+      # montaje de volumen docker
+      # - html:/usr/share/nginx/html:rw
+      # Bind mount de directorio
+      # - /c/Users/eduar/Documents/workspace/devops-if/e03/build2:/usr/share/nginx/html:rw
+      # Bind mount de archivo
+      - /c/Users/eduar/Documents/workspace/devops-if/e03/build2/index.html:/usr/share/nginx/html/index2.html:rw
+    depends_on:
+      - aplicacion
+    environment:
+      - APPLICATION=aplicacion
+      - INGRESS=ingress
+
+  aplicacion:
+    image: node
+    pull_policy: always
+    # networs:
+    #   - private
+    #   - database
+    volumes:
+      - html:/usr/share/nginx/html:rw
+
+  database:
+    image: postgres
+    # networks:
+    #   # red para conectar servicocos no expuestos
+    #   - database
+
+# Concepto de "Landing zone" incluye minimo estos tre niveles de aislamiento de red
+# network:
+#   public:
+#   private:
+#   database:
+
+volumes:
+  html:
