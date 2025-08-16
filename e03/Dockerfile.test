@@ -1,0 +1,18 @@
+FROM nginx
+
+ARG MENSAJE="hola mundo"
+
+COPY build2 /usr/share/nginx/html
+
+RUN echo "${MENSAJE}" > /usr/share/nginx/html/test
+
+COPY --chmod=755 entrypoint.sh /
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+###  SPECIAL | OvNER  GRUPO  OTHERS
+###  sticky  | r w x  r w x  r w x
+###  1 2 4   | 1 2 4
+###  0       | 7      5     5
+
+CMD ["nginx", "-g", "daemon off;"]
