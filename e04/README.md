@@ -9,3 +9,15 @@ git add <archivo a agregar>
 git commit -m "<mensaje del commit>"
 git push -u origin <nombre de rama>
 ```
+
+## Cambiar de rama
+
+```powershell
+git checkout <nombre de rama>
+```
+
+## Saltar a la rama anterior
+
+```powershell
+git checkout -
+```
