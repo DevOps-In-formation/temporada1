@@ -1,4 +1,4 @@
-name: En PR
+name: En Push
 
 on:
   push:
