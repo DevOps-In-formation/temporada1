@@ -1,0 +1,16 @@
+name: En PR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  job1:
+    name: Hacer checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref || github.sha }}
