@@ -2,8 +2,6 @@ name: En PR
 
 on:
   pull_request:
-    branches:
-      - episodio*
 
 jobs:
   job1:
