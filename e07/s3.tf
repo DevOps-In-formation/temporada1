@@ -32,31 +32,31 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
       {
         Effect = "Allow"
         Principal = {
-            "AWS" = [
-                data.aws_iam_user.terraform.arn
-            ]
+          "AWS" = [
+            data.aws_iam_user.terraform.arn
+          ]
         }
         Action = [
-            "s3:GetObject",
-            "s3:PutObject",
-            "s3:DeleteObject"
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
         ]
         Resource = [
-            "${aws_s3_bucket.terraform_states.arn}/states/*"
+          "${aws_s3_bucket.terraform_states.arn}/states/*"
         ]
       },
       {
         Effect = "Allow"
         Principal = {
-            "AWS" = [
-                data.aws_iam_user.terraform.arn
-            ]
+          "AWS" = [
+            data.aws_iam_user.terraform.arn
+          ]
         }
         Action = [
-            "s3:ListBucket",
+          "s3:ListBucket",
         ]
         Resource = [
-            aws_s3_bucket.terraform_states.arn
+          aws_s3_bucket.terraform_states.arn
         ]
       }
     ]
