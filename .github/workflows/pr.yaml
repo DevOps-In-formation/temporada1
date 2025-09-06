@@ -16,8 +16,12 @@ jobs:
         run: |
           ls -la
   job2:
-    name: terraform linter
+    name: terraform
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: "eu-central-1"
     container:
       image: hashicorp/terraform:latest
     steps:
@@ -25,12 +29,17 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: ${{ github.ref || github.sha }}
-      - name: terraform format
+      - name: terraform lint format
         run : |
-          cd e06
+          cd e07
           terraform fmt -check -diff
-      - name: terraform validate
+      - name: terraform lint validate
         run : |
-          cd e06
+          cd e07
           terraform init
           terraform validate
+      - name: terraform plan
+        run : |
+          cd e07
+          terraform init
+          terraform plan
