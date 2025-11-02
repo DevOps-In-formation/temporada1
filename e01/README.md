@@ -4,36 +4,32 @@
 
 ```mermaid
 block
-  columns 6
-  block:nsp1:3
-    columns 3
+  columns 4
+  block:nsp1:2
+    columns 2
     or1cn1["Contenedor 1"]
-    or1cne["Contenedor …"]
-    or1cnn["Contenedorn n"]
+    or1cnn["Contenedor … n"]
   end
-  block:nsp2:3
-    columns 3
+  block:nsp2:2
+    columns 2
     or2cn1["Contenedor 1"]
-    or2cne["Contenedor …"]
-    or2cnn["Contenedorn n"]
+    or2cnn["Contenedor … n"]
   end
-  space:6
-  or1["Orquestador 1"]:3
-  or2["Orquestador 2"]:3
-  space:6
-  block:env1:6
-    columns 3
-    hv1vm1["VM 1"]
-    hv1vme["VM …"]
-    hv1vmn["VM n"]
+  space:4
+  or1["Orquestador 1"]:2
+  or2["Orquestador … n"]:2
+  space:4
+  block:env1:4
+    columns 2
+    hv1vm1["Máquina Virtual 1"]
+    hv1vmn["Máquina Virtual … n"]
   end
-  con1["UI para Clientes"]:6
-  vrt1["Plataforma de Virtualizacion"]:6
-  block:dc1:6
-    columns 3
-    dc1srv1["Server 1"]
-    dc2srve["Server …"]
-    dc1srvn["Server n"]
+  con1["Interfaz de Usuario para Clientes"]:4
+  vrt1["Plataforma de Virtualizacion"]:4
+  block:dc1:4
+    columns 2
+    dc1srv1["Servidor 1"]
+    dc1srvn["Servidor … n"]
   end
   env1 --- or1
   env1 --- or2
