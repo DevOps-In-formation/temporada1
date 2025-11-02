@@ -45,71 +45,92 @@ block
 
 ```mermaid
 ---
-title: Areas tradicionales - Dessarrollo y Operaciones
+title: Etapas tradicionales - Dessarrollo, Liberación y Operaciones
 ---
 flowchart LR
   subgraph dev["Desarrollo"]
-    dev_start([Start])
-    dev_stop([Stop])
     direction TB
-    code[Codigo fuente]
-    repo[Repositorio]
+    dev_start([Inicio])
+    dev_stop([Fin])
+    plan[Planeación<br/>y diseño]
+    code[Codificación]
+    repo[Almacena en<br/>repositorio]
     utest[Pruebas Unitarias]
     build[Compilacion]
-    store[Almacena binario<br/>o paquete]
+    store[Almacena binario]
+    notify_rel[Notifica a<br/>liberación]
   end
-  subgraph release["Liberación"]
-    raise_ticket["Requerimiento"]
-    
+  subgraph rel[Liberación]
+    direction TB
+    rel_start([Inicio])
+    rel_stop([Fin])
+    build_rel[Construye paquete]
+    document_rel[Documenta acciones<br/>requeridas]
+    raise_ticket[Levanta requerimiento<br/>a operaciones]
+    wait[\Espera a que<br/>operaciones finalize/]
+    report_dev[Reporta a desarrollo<br/>resultado del proceso]
   end
   subgraph ops["Operaciones"]
-    ops_start([Start])
-    ops_stop([Stop])
-    get[Obtiene binario<br/>o paquete]
+    direction TB
+    ops_start([Inicio])
+    ops_stop([Fin])
+    get[Descarga paquete<br/>e instrucciones]
     install[Instala en servidores]
-    itest[Prueba de integracion]
+    itest[Prueba de integración]
     fail{¿Falló?}
-    rollback[Retorna a la<br/>version anterior]
-    reject[Rechaza el binario<br/>o paquete]
-    accept[Acepta la version]
+    rollback[Revierte los<br/>cambios]
+    reject[Rechaza la versión<br/>- Documenta errores]
+    accept[Acepta la versión]
+    report_rel[Reposta a liberación]
   end
-  dev_start-->code-->repo-->utest-->build-->store-->dev_stop
-  dev -->|"Requerimiento<br/>Libera nueva version"| ops
-  ops_start--->get-->install-->itest-->fail
-  fail-->|Si|rollback-->reject-->ops_stop
-  fail-->|No|accept-->ops_stop
+
+  dev r1@-..- rel r2@-..- ops
+  r1@{ animate: true }
+  r2@{ animate: true }
+  dev_start --> plan --> code --> repo --> utest --> build --> store --> notify_rel --> dev_stop
+  rel_start --> build_rel --> document_rel --> raise_ticket --> wait --> report_dev --> rel_stop
+  ops_start --> get --> install --> itest --> fail
+  fail --> |Si|rollback --> reject --> report_rel
+  fail --> |No|accept --> report_rel
+  report_rel --> ops_stop
 ```
 
 ```mermaid
 ---
-title: DevOps - Areas
+title: DevOps - Etapas
 ---
-flowchart
-  subgraph devops[DevOps]
-    subgraph "Desarrollo"
-      repo[repositorio git]
-    end
-    subgraph who["¿Quien está a cargo aquí?"]
-      registry[Registro de imagenes<br/>de contenedor]
-      subgraph ci[CI/CD]
-        direction TB
-        test[Pruebas<br/>unitarias]
-        build[Compilacion]
-      end
-      state[Almacenamiento de<br/>archivos de estado]
-    end
-    subgraph "Operaciones"
-      infra[Infrastructura]
-    end
+flowchart LR
+  subgraph app["Applicación"]
+    direction TB
+    app_repo[Cambios en<br/>repositorio git]
+    u_test[Pruebas<br/>unitarias]
+    build[Compilación]
+    buildx[Construye imagen<br/>de contenedor]
+    registry[Almacena imagen<br/>de contenedor]
+  end
+  subgraph deploy["Liberación"]
+    direction TB
+    deploy_testing[Libera en pruebas]
+    i_test[Pruebas de integración]
+    deploy_staging[Libera en pre-producción]
+    a_test[\Pruebas de acceptación/]
+    deploy_prod[Libera en produccion]
+    v_test[Pruebas de validación]
+  end
+  subgraph iac["Infrastructura como Código"]
+    direction TB
+    iac_repo[Cambios en<br/>repositorio iac]
+    validate_iac[Validación de IaC]
+    plan_iac[\Examina plan de IaC/]
+    deploy_iac_testing[Libera IaC en<br/>pruebas]
+    deploy_iac_staging[Libera IaC en<br/>pre-producción]
+    deploy_iac_prod[Libera IaC en<br/>producción]
   end
 
-
-  registry --- infra
-  repo --- ci
-  test --- build
-  ci --- registry
-  ci --- infra
-  ci ~~~ state
-  state --- infra
+  app --> deploy r1@--- iac 
+  r1@{ animate: true }
+  app_repo --> u_test --> build --> buildx --> registry
+  deploy_testing --> i_test --> deploy_staging --> a_test --> deploy_prod --> v_test
+  iac_repo --> validate_iac --> plan_iac --> deploy_iac_testing --> deploy_iac_staging --> deploy_iac_prod
 ```
 
