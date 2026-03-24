@@ -4,37 +4,82 @@
 
 ```mermaid
 block
-  columns 4
-  block:nsp1:2
+columns 1
+  block:orq1:1
+  columns 3
+    space
+    lblorq1(["Orquestador"])
+    space
+    block:pod1
     columns 2
-    or1cn1["Contenedor 1"]
-    or1cnn["Contenedor … n"]
-  end
-  block:nsp2:2
+      or1cn1["Contenedor 1a"]:1
+      or1cnn["Contenedor 2a"]:1
+    end
+    block:pod2
     columns 2
-    or2cn1["Contenedor 1"]
-    or2cnn["Contenedor … n"]
-  end
-  space:4
-  or1["Orquestador 1"]:2
-  or2["Orquestador … n"]:2
-  space:4
-  block:env1:4
+      pod2cn1["Contenedor 1b"]:1
+      pod2cnn["Contenedor 2b"]:1
+    end
+    block:podn
     columns 2
-    hv1vm1["Máquina Virtual 1"]
-    hv1vmn["Máquina Virtual … n"]
+      or2cn1["Contenedor 1c"]:1
+      or2cnn["Contenedor … n"]:1
+    end
+    space:3
+    nod1["Nodo   1"]
+    nod2["Nodo   2"]
+    nodn["Nodo … n"]
+    space:4
+    orqcon["Plano de Control"]
+    space:5
+    orqui["Interfaz"]
   end
-  con1["Interfaz de Usuario para Clientes"]:4
-  vrt1["Plataforma de Virtualizacion"]:4
-  block:dc1:4
+  block:hyp1:1
+  columns 3
+    space
+    lblhyp1(["Nube"])
+    space
+    block:hv1
     columns 2
-    dc1srv1["Servidor 1"]
-    dc1srvn["Servidor … n"]
+      hv1vm1["Máquina Virtual 1"]:1
+      hv1vmn["Máquina Virtual 2"]:1
+    end
+    block:hv2
+    columns 2
+      hv2vm1["Máquina Virtual 3"]:1
+      hv2vmn["Máquina Virtual 4"]:1
+    end
+    block:hvn
+    columns 2
+      hvnvm1["Máquina Virtual 5"]:1
+      hvnvmn["Máquina Virtual … n"]:1
+    end
+    space:3
+    srv1["Servidor 1"]
+    srv2["Servidor 2"]
+    srvn["Servidor … n"]
+    space:4
+    con["Plano de Control"]
+    space:5
+    ui["Interfaz"]
   end
-  env1 --- or1
-  env1 --- or2
-  or1 --- nsp1
-  or2 --- nsp2
+
+  nod1 --- pod1
+  nod2 --- pod2
+  nodn --- podn
+  orqcon --> nod1
+  orqcon --> nod2
+  orqcon --> nodn
+  orqui --> orqcon
+  hv1vm1 --- nod1
+  hvnvmn --- nodn
+  hv1 --- srv1
+  hv2 --- srv2
+  hvn --- srvn
+  con --> srv1
+  con --> srv2
+  con --> srvn
+  ui --> con
 ```
 
 ## Areas que conforman DevOPS
